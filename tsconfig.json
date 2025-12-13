@@ -3,7 +3,7 @@
     "target": "ES2019",
     "module": "ESNext",
     "jsx": "react-jsx",
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
     "strict": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -12,7 +12,13 @@
     "isolatedModules": true,
     "noEmit": true,
     "resolveJsonModule": true,
-    "baseUrl": "./src"
+    "baseUrl": "./src",
+    "types": [
+      "react",
+      "react-dom",
+      "node",
+      "@esri/calcite-components/dist/types"
+    ]
   },
   "include": ["src"],
   "exclude": ["node_modules", "build", "dist"]

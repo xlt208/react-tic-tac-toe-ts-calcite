@@ -10,10 +10,11 @@ In addition to completing the tutorial and its optional challenges, I made the f
 
 - Migrated the project from JavaScript to TypeScript and made the codebase fully TypeScript-compliant for improved type safety and maintainability.
 - Parameterized the game board size to support configurable board dimensions beyond the fixed 3×3 layout.
+- Replaced native HTML elements with [Calcite Design System](https://developers.arcgis.com/calcite-design-system/) components for improved consistency and accessibility.
 
 ## Live Demo
 
-Coming soon!
+- https://react-tic-tac-toe-typescript-iota.vercel.app/
 
 ## Running Locally
 
@@ -24,4 +25,4 @@ npm run dev
 
 Then open:
 
-- http://localhost:5173
+- http://localhost:3000

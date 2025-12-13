@@ -1,3 +1,16 @@
+import {
+  CalciteBlock,
+  CalciteBlockGroup,
+  CalciteButton,
+  CalciteList,
+  CalciteListItem,
+  CalciteNavigation,
+  CalciteNavigationLogo,
+  CalciteNotice,
+  CalcitePanel,
+  CalciteShell,
+  CalciteShellPanel,
+} from "@esri/calcite-components-react";
 import { useState } from "react";
 
 type Player = "X" | "O" | null;
@@ -9,9 +22,15 @@ interface SquareProps {
 
 function Square({ value, onSquareClick }: SquareProps) {
   return (
-    <button className="square" onClick={onSquareClick}>
-      {value}
-    </button>
+    <div className="square-wrapper">
+      <CalciteButton
+        appearance="transparent"
+        width="full"
+        onClick={onSquareClick}
+      >
+        {value}
+      </CalciteButton>
+    </div>
   );
 }
 
@@ -48,13 +67,13 @@ function calculateWinner(squares: Player[]): Player {
 }
 
 interface BoardProps {
-  sideLength?: number;
+  sideLength: number;
   xIsNext: boolean;
   squares: Player[];
   onPlay: (nextSquares: Player[]) => void;
 }
 
-function Board({ sideLength = 3, xIsNext, squares, onPlay }: BoardProps) {
+function Board({ sideLength, xIsNext, squares, onPlay }: BoardProps) {
   function handleClick(i: number) {
     if (squares[i] || calculateWinner(squares)) {
       return;
@@ -73,18 +92,19 @@ function Board({ sideLength = 3, xIsNext, squares, onPlay }: BoardProps) {
   if (winner) {
     status = "Winner: " + winner;
   } else {
-    status = "Next player: " + (xIsNext ? "X" : "O");
+    status = "Next Player: " + (xIsNext ? "X" : "O");
   }
 
   const rows = [];
   for (let i = 0; i < sideLength; i++) {
     const row = [];
     for (let j = 0; j < sideLength; j++) {
+      const squareIndex = i * sideLength + j;
       row.push(
         <Square
-          key={i * sideLength + j}
-          value={squares[i * sideLength + j]}
-          onSquareClick={() => handleClick(i * sideLength + j)}
+          key={squareIndex}
+          value={squares[squareIndex]}
+          onSquareClick={() => handleClick(squareIndex)}
         />
       );
     }
@@ -95,10 +115,16 @@ function Board({ sideLength = 3, xIsNext, squares, onPlay }: BoardProps) {
     );
   }
   return (
-    <>
-      <div className="status">{status}</div>
-      {rows}
-    </>
+    <CalciteBlockGroup>
+      <CalciteBlock heading="Status" expanded>
+        <CalciteNotice open kind={winner ? "success" : "info"} width="full">
+          <div slot="message">{status}</div>
+        </CalciteNotice>
+      </CalciteBlock>
+      <CalciteBlock heading="Board" expanded>
+        {rows}
+      </CalciteBlock>
+    </CalciteBlockGroup>
   );
 }
 
@@ -121,31 +147,46 @@ export default function Game({ sideLength = 4 }) {
   }
 
   const moves = history.map((_, move) => {
-    const description = move ? "Go to move #" + move : "Go to game start";
-    if (move === currentMove) {
-      return <li key={move}>You are at move #{move}</li>;
-    } else {
-      return (
-        <li key={move}>
-          <button onClick={() => jumpTo(move)}>{description}</button>
-        </li>
-      );
-    }
+    const label = move ? `Move ${move}` : "Game start";
+    const description = move
+      ? move === currentMove
+        ? "You are here"
+        : `Go to move # ${move}`
+      : "Go to game start";
+    return (
+      <CalciteListItem
+        key={move}
+        label={label}
+        description={description}
+        selected={move === currentMove}
+        onClick={move === currentMove ? undefined : () => jumpTo(move)}
+      />
+    );
   });
 
   return (
-    <div className="game">
-      <div className="game-board">
-        <Board
-          sideLength={sideLength}
-          xIsNext={xIsNext}
-          squares={currentSquares}
-          onPlay={handlePlay}
+    <CalciteShell>
+      <CalciteNavigation slot="header">
+        <CalciteNavigationLogo
+          heading="Tic-Tac-Toe Game"
+          heading-level="1"
+          slot="logo"
         />
-      </div>
-      <div className="game-info">
-        <ol>{moves}</ol>
-      </div>
-    </div>
+      </CalciteNavigation>
+
+      <CalciteShellPanel slot="panel-start" position="start">
+        <CalcitePanel heading="Game Board">
+          <Board
+            sideLength={sideLength}
+            xIsNext={xIsNext}
+            squares={currentSquares}
+            onPlay={handlePlay}
+          />
+        </CalcitePanel>
+      </CalciteShellPanel>
+      <CalcitePanel heading="Game Info">
+        <CalciteList>{moves}</CalciteList>
+      </CalcitePanel>
+    </CalciteShell>
   );
 }
