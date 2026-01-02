@@ -1,7 +1,7 @@
 import {
   CalciteBlock,
-  CalciteBlockGroup,
   CalciteButton,
+  CalciteInputNumber,
   CalciteList,
   CalciteListItem,
   CalciteNavigation,
@@ -11,7 +11,7 @@ import {
   CalciteShell,
   CalciteShellPanel,
 } from "@esri/calcite-components-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 type Player = "X" | "O" | null;
 
@@ -35,23 +35,37 @@ function Square({ value, onSquareClick }: SquareProps) {
 }
 
 function calculateWinner(squares: Player[]): Player {
-  const sideLength = Math.sqrt(squares.length);
+  const derivedBoardSize = Math.sqrt(squares.length);
 
   const lines: number[][] = [];
 
-  for (let row = 0; row < sideLength; row++) {
+  for (let row = 0; row < derivedBoardSize; row++) {
     lines.push(
-      Array.from({ length: sideLength }, (_, c) => row * sideLength + c)
+      Array.from(
+        { length: derivedBoardSize },
+        (_, c) => row * derivedBoardSize + c,
+      ),
     );
   }
-  for (let col = 0; col < sideLength; col++) {
+  for (let col = 0; col < derivedBoardSize; col++) {
     lines.push(
-      Array.from({ length: sideLength }, (_, r) => r * sideLength + col)
+      Array.from(
+        { length: derivedBoardSize },
+        (_, r) => r * derivedBoardSize + col,
+      ),
     );
   }
-  lines.push(Array.from({ length: sideLength }, (_, i) => i * sideLength + i));
   lines.push(
-    Array.from({ length: sideLength }, (_, i) => (i + 1) * sideLength - (i + 1))
+    Array.from(
+      { length: derivedBoardSize },
+      (_, i) => i * derivedBoardSize + i,
+    ),
+  );
+  lines.push(
+    Array.from(
+      { length: derivedBoardSize },
+      (_, i) => (i + 1) * derivedBoardSize - (i + 1),
+    ),
   );
   for (const line of lines) {
     const [first, ...rest] = line;
@@ -67,13 +81,13 @@ function calculateWinner(squares: Player[]): Player {
 }
 
 interface BoardProps {
-  sideLength: number;
+  boardSize: number;
   xIsNext: boolean;
   squares: Player[];
   onPlay: (nextSquares: Player[]) => void;
 }
 
-function Board({ sideLength, xIsNext, squares, onPlay }: BoardProps) {
+function Board({ boardSize, xIsNext, squares, onPlay }: BoardProps) {
   function handleClick(i: number) {
     if (squares[i] || calculateWinner(squares)) {
       return;
@@ -96,26 +110,26 @@ function Board({ sideLength, xIsNext, squares, onPlay }: BoardProps) {
   }
 
   const rows = [];
-  for (let i = 0; i < sideLength; i++) {
+  for (let i = 0; i < boardSize; i++) {
     const row = [];
-    for (let j = 0; j < sideLength; j++) {
-      const squareIndex = i * sideLength + j;
+    for (let j = 0; j < boardSize; j++) {
+      const squareIndex = i * boardSize + j;
       row.push(
         <Square
           key={squareIndex}
           value={squares[squareIndex]}
           onSquareClick={() => handleClick(squareIndex)}
-        />
+        />,
       );
     }
     rows.push(
       <div key={i} className="board-row">
         {row}
-      </div>
+      </div>,
     );
   }
   return (
-    <CalciteBlockGroup>
+    <>
       <CalciteBlock heading="Status" expanded>
         <CalciteNotice open kind={winner ? "success" : "info"} width="full">
           <div slot="message">{status}</div>
@@ -124,15 +138,20 @@ function Board({ sideLength, xIsNext, squares, onPlay }: BoardProps) {
       <CalciteBlock heading="Board" expanded>
         {rows}
       </CalciteBlock>
-    </CalciteBlockGroup>
+    </>
   );
 }
 
-export default function Game({ sideLength = 4 }) {
+export default function Game() {
+  const [boardSize, setBoardSize] = useState(4);
+
   const [history, setHistory] = useState<Player[][]>([
-    Array(sideLength * sideLength).fill(null),
+    Array(boardSize * boardSize).fill(null),
   ]);
   const [currentMove, setCurrentMove] = useState(0);
+
+  const pendingSizeRef = useRef<HTMLCalciteInputNumberElement>(null);
+
   const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove];
 
@@ -164,6 +183,12 @@ export default function Game({ sideLength = 4 }) {
     );
   });
 
+  function onRestartGame(newBoardSize: number) {
+    setBoardSize(newBoardSize);
+    setHistory([Array(newBoardSize * newBoardSize).fill(null)]);
+    setCurrentMove(0);
+  }
+
   return (
     <CalciteShell>
       <CalciteNavigation slot="header">
@@ -178,18 +203,55 @@ export default function Game({ sideLength = 4 }) {
         width="l"
         slot="panel-start"
         position="start"
+        displayMode="float"
         resizable
       >
         <CalcitePanel heading="Game Board">
           <Board
-            sideLength={sideLength}
+            boardSize={boardSize}
             xIsNext={xIsNext}
             squares={currentSquares}
             onPlay={handlePlay}
           />
+
+          <CalciteBlock
+            className="restart-block"
+            heading="Restart Game"
+            collapsible
+            expanded={false}
+          >
+            <CalciteInputNumber
+              ref={pendingSizeRef}
+              alignment="center"
+              integer
+              labelText="Board Size"
+              max={10}
+              min={3}
+              numberButtonType="vertical"
+              scale="m"
+              value={boardSize.toString()}
+            />
+
+            <CalciteButton
+              appearance="outline"
+              kind="danger"
+              round
+              width="full"
+              onClick={() =>
+                onRestartGame(Number(pendingSizeRef.current?.value))
+              }
+            >
+              Restart
+            </CalciteButton>
+          </CalciteBlock>
         </CalcitePanel>
       </CalciteShellPanel>
-      <CalciteShellPanel width="l" slot="panel-start" position="end">
+      <CalciteShellPanel
+        slot="panel-start"
+        position="start"
+        display-mode="float"
+        width="l"
+      >
         <CalcitePanel heading="Game Info">
           <CalciteList>{moves}</CalciteList>
         </CalcitePanel>
