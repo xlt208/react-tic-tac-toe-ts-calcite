@@ -2,6 +2,7 @@ import {
   CalciteBlock,
   CalciteButton,
   CalciteInputNumber,
+  CalciteLabel,
 } from "@esri/calcite-components-react";
 import { useRef } from "react";
 
@@ -27,33 +28,29 @@ export default function RestartControls({
 
   return (
     <>
-      <CalciteBlock
-        className="restart-block"
-        heading="Restart Game"
-        collapsible
-        expanded={false}
-      >
-        <CalciteInputNumber
-          ref={pendingSizeRef}
-          alignment="center"
-          integer
-          labelText="Board Size"
-          max={10}
-          min={3}
-          numberButtonType="vertical"
-          scale="m"
-          value={boardSize.toString()}
-        />
-
-        <CalciteButton
-          appearance="outline"
-          kind="danger"
-          round
-          width="full"
-          onClick={handleRestartClick}
-        >
-          Restart
-        </CalciteButton>
+      <CalciteBlock heading="Restart Game" collapsible expanded={false}>
+        <CalciteLabel>
+          Board Size
+          <CalciteInputNumber
+            ref={pendingSizeRef}
+            alignment="center"
+            integer
+            max={10}
+            min={3}
+            numberButtonType="vertical"
+            scale="m"
+            value={boardSize.toString()}
+          />
+          <CalciteButton
+            appearance="outline"
+            kind="danger"
+            round
+            width="full"
+            onClick={handleRestartClick}
+          >
+            Restart
+          </CalciteButton>
+        </CalciteLabel>
       </CalciteBlock>
     </>
   );
