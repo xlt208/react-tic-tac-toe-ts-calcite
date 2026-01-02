@@ -17,7 +17,6 @@
       "react",
       "react-dom",
       "node",
-      "@esri/calcite-components/dist/types"
     ]
   },
   "include": ["src"],
