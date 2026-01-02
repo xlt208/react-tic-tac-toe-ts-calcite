@@ -57,14 +57,13 @@ export default function Game() {
           <RestartControls boardSize={boardSize} onRestart={onRestart} />
         </CalcitePanel>
       </CalciteShellPanel>
+
       <CalciteShellPanel width="l">
-        <CalcitePanel heading="Game Info">
-          <GameInfo
-            movesHistory={history}
-            currentMove={currentMove}
-            onSelectMove={setCurrentMove}
-          />
-        </CalcitePanel>
+        <GameInfo
+          movesHistory={history}
+          currentMove={currentMove}
+          onSelectMove={setCurrentMove}
+        />
       </CalciteShellPanel>
     </CalciteShell>
   );
