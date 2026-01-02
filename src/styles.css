@@ -1,6 +1,6 @@
 .square-wrapper {
   width: 4rem;
-  height: 4rem;
+  aspect-ratio: 1 / 1;
   display: flex;
   border: 2px solid var(--calcite-color-border-3, #c7c7c7);
   margin-right: -1px;
