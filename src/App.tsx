@@ -44,7 +44,7 @@ export default function Game() {
         width="l"
         slot="panel-start"
         position="start"
-        displayMode="float"
+        displayMode="float-all"
         resizable
       >
         <CalcitePanel heading="Game Board">
@@ -58,7 +58,7 @@ export default function Game() {
         </CalcitePanel>
       </CalciteShellPanel>
 
-      <CalciteShellPanel width="l">
+      <CalciteShellPanel width="l" displayMode="float-all">
         <GameInfo
           movesHistory={history}
           boardSize={boardSize}
