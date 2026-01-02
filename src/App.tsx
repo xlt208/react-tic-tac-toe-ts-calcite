@@ -61,6 +61,7 @@ export default function Game() {
       <CalciteShellPanel width="l">
         <GameInfo
           movesHistory={history}
+          boardSize={boardSize}
           currentMove={currentMove}
           onSelectMove={setCurrentMove}
         />

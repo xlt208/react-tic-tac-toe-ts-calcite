@@ -11,6 +11,7 @@ import { useState } from "react";
 
 interface GameInfoProps {
   movesHistory: BoardHistory;
+  boardSize: number;
   currentMove: number;
   onSelectMove: (move: number) => void;
 }
@@ -19,37 +20,48 @@ type SortOrder = "new-to-old" | "old-to-new";
 
 export default function GameInfo({
   movesHistory,
+  boardSize,
   currentMove,
   onSelectMove,
 }: GameInfoProps) {
   const [sortOrder, setSortOrder] = useState<SortOrder>("new-to-old");
-  const movesWithNumbers = movesHistory.map((_, index) => index);
+  const movesWithIndex = movesHistory.map((board, index) => ({
+    board,
+    index,
+  }));
 
   const orderedMoves =
-    sortOrder === "new-to-old"
-      ? [...movesWithNumbers].reverse()
-      : movesWithNumbers;
+    sortOrder === "new-to-old" ? [...movesWithIndex].reverse() : movesWithIndex;
 
-  const moves = orderedMoves.map((moveNumber) => {
-    const label = moveNumber ? `Move ${moveNumber}` : "Game start";
+  const moves = orderedMoves.map(({ board, index }) => {
+    let label = "Game start";
 
-    const description = moveNumber
-      ? moveNumber === currentMove
+    if (index > 0) {
+      const prevBoard = movesHistory[index - 1];
+      const changedIndex = board.findIndex(
+        (value, idx) => value !== prevBoard[idx] && value !== null,
+      );
+
+      if (changedIndex !== -1) {
+        const row = Math.floor(changedIndex / boardSize) + 1;
+        const col = (changedIndex % boardSize) + 1;
+        label = `Move #${index} - row: ${row}, col: ${col}`;
+      }
+    }
+
+    const description = index
+      ? index === currentMove
         ? "You are here"
-        : `Go to move # ${moveNumber}`
+        : "Go to this move"
       : "Go to game start";
 
     return (
       <CalciteListItem
-        key={moveNumber}
+        key={index}
         label={label}
         description={description}
-        selected={moveNumber === currentMove}
-        onClick={
-          moveNumber === currentMove
-            ? undefined
-            : () => onSelectMove(moveNumber)
-        }
+        selected={index === currentMove}
+        onClick={index === currentMove ? undefined : () => onSelectMove(index)}
       />
     );
   });
