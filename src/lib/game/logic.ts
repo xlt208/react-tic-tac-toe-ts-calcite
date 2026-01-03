@@ -1,7 +1,9 @@
-
 import { Player, Squares } from "./types";
 
-export function calculateWinner(squares: Squares): Player {
+export function calculateWinner(squares: Squares): {
+  winner: Player | null;
+  winningLine: number[];
+} {
   const derivedBoardSize = Math.sqrt(squares.length);
   const lines: number[][] = [];
 
@@ -36,16 +38,16 @@ export function calculateWinner(squares: Squares): Player {
       (_, i) => (i + 1) * derivedBoardSize - (i + 1),
     ),
   );
-  
+
   for (const line of lines) {
     const [first, ...rest] = line;
     if (
       squares[first] &&
       rest.every((idx) => squares[idx] === squares[first])
     ) {
-      return squares[first];
+      return { winner: squares[first], winningLine: line };
     }
   }
 
-  return null;
+  return { winner: null, winningLine: [] };
 }

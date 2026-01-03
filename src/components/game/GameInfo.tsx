@@ -66,8 +66,8 @@ export default function GameInfo({
     );
   });
 
-  const handleSortChange = (event: Event) => {
-    const target = event.target as HTMLCalciteSegmentedControlElement | null;
+  const handleSortChange = (e: Event) => {
+    const target = e.target as HTMLCalciteSegmentedControlElement | null;
     const value = target?.value;
     if (value !== "new-to-old" && value !== "old-to-new") return;
     setSortOrder(value);
