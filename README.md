@@ -18,7 +18,7 @@ In addition to [completing the tutorial](https://react.dev/learn/tutorial-tic-ta
 
 ## Live Demo
 
-- https://react-tic-tac-toe-ts-calcite.vercel.app/ *(update the deployment alias after renaming the repo)*
+- https://react-tic-tac-toe-ts-calcite.vercel.app/
 
 ## Running Locally
 
