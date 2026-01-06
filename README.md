@@ -6,14 +6,19 @@ This project is based on [the React Tic-Tac-Toe tutorial](https://react.dev/lear
 
 ## Enhancements Beyond the Tutorial
 
-In addition to [completing the tutorial](https://react.dev/learn/tutorial-tic-tac-toe#wrapping-up), I made the following enhancements:
+In addition to [completing the tutorial](https://react.dev/learn/tutorial-tic-tac-toe#wrapping-up), I made the following enhancements.
 
-- Migrated the project from JavaScript to TypeScript and made the codebase fully TypeScript-compliant for improved type safety and maintainability.
-- Replaced native HTML elements with [Calcite Design System](https://developers.arcgis.com/calcite-design-system/) components for improved consistency and accessibility.
-- Added a restart flow that lets players spin up a new game with any board size from 3 to 10, not just the original 3×3.
-- Added a segmented toggle so players can switch the move list between ascending and descending order.
-- Added a “Draw!” status and highlighted winning squares so the result of each game is immediately clear. Disabled the board once a game ends so finished matches can’t be altered.
+### Architecture & Tooling
+- **TypeScript-first** – The entire project is migrated from JavaScript for stricter typing and easier refactors.
 
+### UI & Design System
+- **Calcite components** – Native HTML controls were swapped for Calcite’s accessible, themed components.
+
+### Gameplay & UX
+- **Flexible restarts** – Start a fresh board anywhere from 3×3 up to 10×10.
+- **Persistent sessions** – Board size, move history, and the current turn are synced to `localStorage`, so refreshes keep the current match.
+- **Move ordering toggle** – Switch the history list between ascending and descending order.
+- **End-state clarity** – “Draw!” state, highlighted winning lines, and auto-disabled boards make results obvious.
 
 
 ## Live Demo
