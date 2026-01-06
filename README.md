@@ -1,12 +1,12 @@
-# React Tic-Tac-Toe
+# React Tic-Tac-Toe TS Calcite
 
-A personal learning project built with **React and TypeScript**.
+A personal learning project built with **React**, **TypeScript**, and the **Calcite Design System**.
 
 This project is based on [the React Tic-Tac-Toe tutorial](https://react.dev/learn/tutorial-tic-tac-toe) and extended with additional improvements to reinforce my understanding of React fundamentals and TypeScript usage in a real project.
 
 ## Enhancements Beyond the Tutorial
 
-In addition to completing the tutorial, I made the following enhancements:
+In addition to [completing the tutorial](https://react.dev/learn/tutorial-tic-tac-toe#wrapping-up), I made the following enhancements:
 
 - Migrated the project from JavaScript to TypeScript and made the codebase fully TypeScript-compliant for improved type safety and maintainability.
 - Replaced native HTML elements with [Calcite Design System](https://developers.arcgis.com/calcite-design-system/) components for improved consistency and accessibility.
@@ -18,7 +18,7 @@ In addition to completing the tutorial, I made the following enhancements:
 
 ## Live Demo
 
-- https://react-tic-tac-toe-typescript-iota.vercel.app/
+- https://react-tic-tac-toe-ts-calcite.vercel.app/ *(update the deployment alias after renaming the repo)*
 
 ## Running Locally
 
