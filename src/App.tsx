@@ -6,17 +6,61 @@ import {
   CalciteShellPanel,
 } from "@esri/calcite-components-react";
 import { BoardHistory, Squares } from "lib/game/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Board, GameInfo, RestartControls } from "./components/game";
 
+const STORAGE_KEY = "ttt-game";
+
+const emptyBoard = (size: number) => Array(size * size).fill(null);
+
+const loadGame = () => {
+  if (typeof window === "undefined" || !window.localStorage) {
+    return null;
+  }
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as {
+      boardSize: number;
+      history: Squares[];
+      currentMove: number;
+    };
+    const sizeIsValid =
+      Number.isInteger(parsed.boardSize) && parsed.boardSize >= 3;
+    const historyIsValid =
+      Array.isArray(parsed.history) &&
+      parsed.history.every(
+        (squares) =>
+          Array.isArray(squares) && squares.length === parsed.boardSize ** 2,
+      );
+    const moveIsValid =
+      Number.isInteger(parsed.currentMove) &&
+      parsed.currentMove >= 0 &&
+      parsed.currentMove < parsed.history.length;
+    return sizeIsValid && historyIsValid && moveIsValid ? parsed : null;
+  } catch {
+    return null;
+  }
+};
+
 export default function Game() {
-  const [boardSize, setBoardSize] = useState(4);
-  const [history, setHistory] = useState<BoardHistory>([
-    Array(boardSize * boardSize).fill(null),
-  ]);
-  const [currentMove, setCurrentMove] = useState(0);
+  const hydrated = loadGame();
+
+  const [boardSize, setBoardSize] = useState(() => hydrated?.boardSize ?? 4);
+  const [history, setHistory] = useState<BoardHistory>(
+    () => hydrated?.history ?? [emptyBoard(hydrated?.boardSize ?? 4)],
+  );
+  const [currentMove, setCurrentMove] = useState(
+    () => hydrated?.currentMove ?? 0,
+  );
+
   const xIsNext = currentMove % 2 === 0;
   const currentSquares = history[currentMove];
+
+  useEffect(() => {
+    const payload = { boardSize, history, currentMove };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  }, [boardSize, history, currentMove]);
 
   function handlePlay(nextSquares: Squares) {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
@@ -26,7 +70,8 @@ export default function Game() {
 
   function onRestart(newBoardSize: number) {
     setBoardSize(newBoardSize);
-    setHistory([Array(newBoardSize * newBoardSize).fill(null)]);
+    const resetBoard = emptyBoard(newBoardSize);
+    setHistory([resetBoard]);
     setCurrentMove(0);
   }
 
