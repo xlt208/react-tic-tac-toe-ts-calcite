@@ -62,18 +62,18 @@ export default function Game() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
   }, [boardSize, history, currentMove]);
 
-  function handlePlay(nextSquares: Squares) {
+  const handlePlay = (nextSquares: Squares) => {
     const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
     setHistory(nextHistory);
     setCurrentMove(nextHistory.length - 1);
-  }
+  };
 
-  function onRestart(newBoardSize: number) {
+  const onRestart = (newBoardSize: number) => {
     setBoardSize(newBoardSize);
     const resetBoard = emptyBoard(newBoardSize);
     setHistory([resetBoard]);
     setCurrentMove(0);
-  }
+  };
 
   return (
     <CalciteShell>

@@ -43,6 +43,7 @@ export default function RestartControls({
           />
           <CalciteButton
             appearance="outline"
+            iconStart="reset"
             kind="danger"
             round
             width="full"

@@ -18,6 +18,7 @@ In addition to [completing the tutorial](https://react.dev/learn/tutorial-tic-ta
 - **Flexible restarts** – Start a fresh board anywhere from 3×3 up to 10×10.
 - **Persistent sessions** – Board size, move history, and the current turn are synced to `localStorage`, so refreshes keep the current match.
 - **Move ordering toggle** – Switch the history list between ascending and descending order.
+- **Printable move history** – Generate a timestamped summary of every move through the browser’s print dialog.
 - **End-state clarity** – “Draw!” state, highlighted winning lines, and auto-disabled boards make results obvious.
 
 

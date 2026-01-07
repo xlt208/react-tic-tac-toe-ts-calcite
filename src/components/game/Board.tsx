@@ -18,20 +18,14 @@ export default function Board({
 }: BoardProps) {
   const { winner, winningLine } = calculateWinner(squares);
   const winningSquares = new Set(winningLine);
+
   const isDraw = !winner && squares.every(Boolean);
 
-  function handleClick(i: number) {
-    if (squares[i] || winner) {
-      return;
-    }
-    const nextSquares = squares.slice();
-    if (xIsNext) {
-      nextSquares[i] = "X";
-    } else {
-      nextSquares[i] = "O";
-    }
-    onPlay(nextSquares);
-  }
+  const status = winner
+    ? "Winner: " + winner
+    : isDraw
+      ? "Draw!"
+      : "Next Player: " + (xIsNext ? "X" : "O");
 
   const rows = [];
   for (let i = 0; i < boardSize; i++) {
@@ -55,18 +49,27 @@ export default function Board({
     );
   }
 
-  const status = winner
-    ? "Winner: " + winner
-    : isDraw
-      ? "Draw!"
-      : "Next Player: " + (xIsNext ? "X" : "O");
-
-  const statusKind = winner ? "success" : isDraw ? "warning" : "info";
+  const handleClick = (i: number) => {
+    if (squares[i] || winner) {
+      return;
+    }
+    const nextSquares = squares.slice();
+    if (xIsNext) {
+      nextSquares[i] = "X";
+    } else {
+      nextSquares[i] = "O";
+    }
+    onPlay(nextSquares);
+  };
 
   return (
     <>
       <CalciteBlock heading="Status" expanded>
-        <CalciteNotice open kind={statusKind} width="full">
+        <CalciteNotice
+          open
+          kind={winner ? "success" : isDraw ? "warning" : "info"}
+          width="full"
+        >
           <div slot="message">{status}</div>
         </CalciteNotice>
       </CalciteBlock>

@@ -18,8 +18,8 @@ export default function Square({
     <div className="square-wrapper">
       <CalciteButton
         appearance={isWinning ? "outline-fill" : "transparent"}
-        width="full"
         disabled={disabled}
+        width="full"
         onClick={onSquareClick}
       >
         {value}
