@@ -4,6 +4,10 @@ A personal learning project built with **React**, **TypeScript**, and the **Calc
 
 This project is based on [the React Tic-Tac-Toe tutorial](https://react.dev/learn/tutorial-tic-tac-toe) and extended with additional improvements to reinforce my understanding of React fundamentals and TypeScript usage in a real project.
 
+## AI Assistance
+
+AI was used for troubleshooting, identifying areas of improvement, and drafting this README, but all decisions and final edits were made by me.
+
 ## Enhancements Beyond the Tutorial
 
 In addition to [completing the tutorial](https://react.dev/learn/tutorial-tic-tac-toe#wrapping-up), I made the following enhancements.
