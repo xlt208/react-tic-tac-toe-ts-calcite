@@ -28,7 +28,12 @@ export default function RestartControls({
 
   return (
     <>
-      <CalciteBlock heading="Restart Game" collapsible expanded={false}>
+      <CalciteBlock
+        heading="Restart Game"
+        collapsible
+        expanded={false}
+        iconStart="reset"
+      >
         <CalciteLabel>
           Board Size
           <CalciteInputNumber

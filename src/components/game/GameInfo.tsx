@@ -199,7 +199,12 @@ export default function GameInfo({
 
   return (
     <CalcitePanel heading="Game Info">
-      <CalciteBlock heading="Sort by" collapsible expanded={false} scale="s">
+      <CalciteBlock
+        heading="Sort by"
+        collapsible
+        expanded={false}
+        iconStart="arrow-up-down"
+      >
         <CalciteSegmentedControl
           appearance="outline-fill"
           layout="horizontal"

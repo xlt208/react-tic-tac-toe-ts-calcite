@@ -64,7 +64,7 @@ export default function Board({
 
   return (
     <>
-      <CalciteBlock heading="Status" expanded>
+      <CalciteBlock heading="Status" expanded iconStart="activity-monitor">
         <CalciteNotice
           open
           kind={winner ? "success" : isDraw ? "warning" : "info"}
@@ -73,7 +73,7 @@ export default function Board({
           <div slot="message">{status}</div>
         </CalciteNotice>
       </CalciteBlock>
-      <CalciteBlock heading="Board" expanded>
+      <CalciteBlock heading="Board" expanded iconStart="grid">
         {rows}
       </CalciteBlock>
     </>
