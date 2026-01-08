@@ -226,7 +226,7 @@ export default function GameInfo({
       <CalciteList>{moves}</CalciteList>
       <CalciteButton
         appearance="outline-fill"
-        disabled={currentMove === 0}
+        disabled={movesHistory.length <= 1}
         iconStart="print"
         onClick={handlePrint}
       >
