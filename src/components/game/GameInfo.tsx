@@ -8,7 +8,7 @@ import {
   CalciteSegmentedControlItem,
 } from "@esri/calcite-components-react";
 import { BoardHistory } from "lib/game/types";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 
 interface GameInfoProps {
   movesHistory: BoardHistory;
@@ -175,8 +175,6 @@ export default function GameInfo({
     setSortOrder(value);
   };
 
-  const printButtonRef = useRef<HTMLCalciteButtonElement>(null);
-
   const handlePrint = useCallback(() => {
     if (typeof window === "undefined") return;
     const popup = window.open("", "_blank");
@@ -187,17 +185,6 @@ export default function GameInfo({
     const markup = buildPrintableMarkup(orderedMoves);
     openPrintDialog(popup, markup).catch(console.error);
   }, [orderedMoves]);
-
-  useEffect(() => {
-    const host = printButtonRef.current;
-    const innerButton = host?.shadowRoot?.querySelector("button");
-    if (!innerButton) return;
-
-    innerButton.addEventListener("click", handlePrint);
-    return () => {
-      innerButton.removeEventListener("click", handlePrint);
-    };
-  }, [handlePrint]);
 
   return (
     <CalcitePanel heading="Game Info">
@@ -227,10 +214,10 @@ export default function GameInfo({
       </CalciteBlock>
       <CalciteList>{moves}</CalciteList>
       <CalciteButton
-        ref={printButtonRef}
         appearance="outline-fill"
         disabled={currentMove === 0}
         iconStart="print"
+        onClick={handlePrint}
       >
         Print move history
       </CalciteButton>
