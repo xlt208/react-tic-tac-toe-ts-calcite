@@ -4,9 +4,13 @@ A personal learning project built with **React**, **TypeScript**, and the **Calc
 
 This project is based on [the React Tic-Tac-Toe tutorial](https://react.dev/learn/tutorial-tic-tac-toe) and extended with additional improvements to reinforce my understanding of React fundamentals and TypeScript usage in a real project.
 
+## Live Demo
+
+- https://react-tic-tac-toe-ts-calcite.vercel.app/
+
 ## AI Assistance
 
-AI was used for troubleshooting, identifying areas of improvement, and drafting this README, but all decisions and final edits were made by me.
+AI was used as a support tool for troubleshooting, identifying areas of improvement, polishing commit messages, and drafting this README. All decisions and final edits were made by me.
 
 ## Enhancements Beyond the Tutorial
 
@@ -24,11 +28,6 @@ In addition to [completing the tutorial](https://react.dev/learn/tutorial-tic-ta
 - **Move ordering toggle** – Switch the history list between ascending and descending order.
 - **Printable move history** – Generate a timestamped summary of every move through the browser’s print dialog.
 - **End-state clarity** – “Draw!” state, highlighted winning lines, and auto-disabled boards make results obvious.
-
-
-## Live Demo
-
-- https://react-tic-tac-toe-ts-calcite.vercel.app/
 
 ## Running Locally
 
