@@ -42,10 +42,21 @@ const formatMoves = (
         description: "Go to game start",
       };
     }
+
     const prevBoard = movesHistory[index - 1];
     const changedIndex = board.findIndex(
       (value, idx) => value !== prevBoard[idx] && value !== null,
     );
+    if (changedIndex === -1) {
+      return {
+        index: index,
+        player: null,
+        row: null,
+        col: null,
+        description: "Unknown move",
+      };
+    }
+
     const row = Math.floor(changedIndex / boardSize) + 1;
     const col = (changedIndex % boardSize) + 1;
     const player = index % 2 === 1 ? "X" : "O";
