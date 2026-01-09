@@ -1,6 +1,6 @@
 # React Tic-Tac-Toe TS Calcite
 
-A personal learning project built with **React**, **TypeScript**, and the **Calcite Design System**.
+A personal learning project built with [**React**](https://react.dev/), [**TypeScript**](https://www.typescriptlang.org/), and the [**Calcite Design System**](https://developers.arcgis.com/calcite-design-system/).
 
 This project is based on [the React Tic-Tac-Toe tutorial](https://react.dev/learn/tutorial-tic-tac-toe) and extended with additional improvements to reinforce my understanding of React fundamentals and TypeScript usage in a real project.
 
