@@ -1,4 +1,3 @@
-import { CalciteBlock, CalciteNotice } from "@esri/calcite-components-react";
 import { calculateWinner } from "lib/game/logic";
 import { Squares } from "lib/game/types";
 import Square from "./Square";
@@ -64,18 +63,18 @@ export default function Board({
 
   return (
     <>
-      <CalciteBlock heading="Status" expanded iconStart="activity-monitor">
-        <CalciteNotice
+      <calcite-block heading="Status" expanded iconStart="activity-monitor">
+        <calcite-notice
           open
           kind={winner ? "success" : isDraw ? "warning" : "info"}
           width="full"
         >
           <div slot="message">{status}</div>
-        </CalciteNotice>
-      </CalciteBlock>
-      <CalciteBlock heading="Board" expanded iconStart="grid">
+        </calcite-notice>
+      </calcite-block>
+      <calcite-block heading="Board" expanded iconStart="grid">
         {rows}
-      </CalciteBlock>
+      </calcite-block>
     </>
   );
 }

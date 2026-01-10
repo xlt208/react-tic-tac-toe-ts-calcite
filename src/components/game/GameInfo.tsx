@@ -1,12 +1,3 @@
-import {
-  CalciteBlock,
-  CalciteButton,
-  CalciteList,
-  CalciteListItem,
-  CalcitePanel,
-  CalciteSegmentedControl,
-  CalciteSegmentedControlItem,
-} from "@esri/calcite-components-react";
 import { BoardHistory } from "lib/game/types";
 import { useCallback, useState } from "react";
 
@@ -169,7 +160,7 @@ export default function GameInfo({
         ? "Game start"
         : `Move #${index}: ${player} - row ${row}, col ${col}`;
     return (
-      <CalciteListItem
+      <calcite-list-item
         key={index}
         label={label}
         description={description}
@@ -198,45 +189,45 @@ export default function GameInfo({
   }, [orderedMoves]);
 
   return (
-    <CalcitePanel heading="Game Info">
-      <CalciteBlock
+    <calcite-panel heading="Game Info">
+      <calcite-block
         heading="Sort by"
         collapsible
         expanded={false}
         iconStart="arrow-up-down"
       >
-        <CalciteSegmentedControl
+        <calcite-segmented-control
           appearance="outline-fill"
           layout="horizontal"
           scale="m"
           width="full"
-          onCalciteSegmentedControlChange={handleSortChange}
+          oncalciteSegmentedControlChange={handleSortChange}
         >
-          <CalciteSegmentedControlItem
+          <calcite-segmented-control-item
             value="new-to-old"
             checked={sortOrder === "new-to-old"}
             iconStart="clock-down"
           >
             Newest move first
-          </CalciteSegmentedControlItem>
-          <CalciteSegmentedControlItem
+          </calcite-segmented-control-item>
+          <calcite-segmented-control-item
             value="old-to-new"
             checked={sortOrder === "old-to-new"}
             iconStart="clock-up"
           >
             Oldest move first
-          </CalciteSegmentedControlItem>
-        </CalciteSegmentedControl>
-      </CalciteBlock>
-      <CalciteList>{moves}</CalciteList>
-      <CalciteButton
+          </calcite-segmented-control-item>
+        </calcite-segmented-control>
+      </calcite-block>
+      <calcite-list label="Move history">{moves}</calcite-list>
+      <calcite-button
         appearance="outline-fill"
         disabled={movesHistory.length <= 1}
         iconStart="print"
         onClick={handlePrint}
       >
         Print move history
-      </CalciteButton>
-    </CalcitePanel>
+      </calcite-button>
+    </calcite-panel>
   );
 }

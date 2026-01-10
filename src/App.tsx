@@ -1,10 +1,3 @@
-import {
-  CalciteNavigation,
-  CalciteNavigationLogo,
-  CalcitePanel,
-  CalciteShell,
-  CalciteShellPanel,
-} from "@esri/calcite-components-react";
 import { BoardHistory, Squares } from "lib/game/types";
 import { useEffect, useState } from "react";
 import { Board, GameInfo, RestartControls } from "./components/game";
@@ -76,23 +69,23 @@ export default function Game() {
   };
 
   return (
-    <CalciteShell>
-      <CalciteNavigation slot="header">
-        <CalciteNavigationLogo
+    <calcite-shell>
+      <calcite-navigation slot="header">
+        <calcite-navigation-logo
           heading="Tic-Tac-Toe Game"
           heading-level="1"
           slot="logo"
         />
-      </CalciteNavigation>
+      </calcite-navigation>
 
-      <CalciteShellPanel
+      <calcite-shell-panel
         width="l"
         slot="panel-start"
         position="start"
         displayMode="float-all"
         resizable
       >
-        <CalcitePanel heading="Game Board">
+        <calcite-panel heading="Game Board">
           <Board
             boardSize={boardSize}
             xIsNext={xIsNext}
@@ -100,17 +93,17 @@ export default function Game() {
             onPlay={handlePlay}
           />
           <RestartControls boardSize={boardSize} onRestart={onRestart} />
-        </CalcitePanel>
-      </CalciteShellPanel>
+        </calcite-panel>
+      </calcite-shell-panel>
 
-      <CalciteShellPanel width="l" displayMode="float-all">
+      <calcite-shell-panel width="l" displayMode="float-all">
         <GameInfo
           movesHistory={history}
           boardSize={boardSize}
           currentMove={currentMove}
           onSelectMove={setCurrentMove}
         />
-      </CalciteShellPanel>
-    </CalciteShell>
+      </calcite-shell-panel>
+    </calcite-shell>
   );
 }

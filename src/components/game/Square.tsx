@@ -1,4 +1,3 @@
-import { CalciteButton } from "@esri/calcite-components-react";
 import { Player } from "lib/game/types";
 
 interface SquareProps {
@@ -16,14 +15,14 @@ export default function Square({
 }: SquareProps) {
   return (
     <div className="square-wrapper">
-      <CalciteButton
+      <calcite-button
         appearance={isWinning ? "outline-fill" : "transparent"}
         disabled={disabled}
         width="full"
         onClick={onSquareClick}
       >
         {value}
-      </CalciteButton>
+      </calcite-button>
     </div>
   );
 }
