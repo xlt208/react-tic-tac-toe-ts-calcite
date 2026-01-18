@@ -5,6 +5,8 @@ interface SquareProps {
   isWinning: boolean;
   disabled: boolean;
   onSquareClick: () => void;
+  row: number;
+  col: number;
 }
 
 export default function Square({
@@ -12,12 +14,17 @@ export default function Square({
   isWinning,
   disabled,
   onSquareClick,
+  row,
+  col,
 }: SquareProps) {
+  const label = `Row ${row}, Column ${col}, ${value ?? "empty"}`;
+
   return (
     <div className="square-wrapper">
       <calcite-button
         appearance={isWinning ? "outline-fill" : "transparent"}
         disabled={disabled}
+        label={label}
         width="full"
         onClick={onSquareClick}
       >

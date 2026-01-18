@@ -31,6 +31,8 @@ export default function Board({
     const row = [];
     for (let j = 0; j < boardSize; j++) {
       const squareIndex = i * boardSize + j;
+      const rowNumber = i + 1;
+      const colNumber = j + 1;
       row.push(
         <Square
           key={squareIndex}
@@ -38,6 +40,8 @@ export default function Board({
           isWinning={winningSquares.has(squareIndex)}
           disabled={Boolean(winner) || isDraw}
           onSquareClick={() => handleClick(squareIndex)}
+          row={rowNumber}
+          col={colNumber}
         />,
       );
     }
