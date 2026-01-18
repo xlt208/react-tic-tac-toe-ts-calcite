@@ -69,7 +69,14 @@ export default function Board({
           kind={winner ? "success" : isDraw ? "warning" : "info"}
           width="full"
         >
-          <div slot="message">{status}</div>
+          <div
+            slot="message"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {status}
+          </div>
         </calcite-notice>
       </calcite-block>
       <calcite-block heading="Board" expanded iconStart="grid">

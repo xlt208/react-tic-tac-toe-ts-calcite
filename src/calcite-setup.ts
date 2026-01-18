@@ -1,4 +1,5 @@
 /// <reference types="@esri/calcite-components/types/react" />
+
 import { setAssetPath } from "@esri/calcite-components";
 setAssetPath("https://js.arcgis.com/calcite-components/3.3.3/");
 
