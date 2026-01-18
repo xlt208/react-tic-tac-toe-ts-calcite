@@ -46,7 +46,7 @@ export default function Board({
       );
     }
     rows.push(
-      <div key={i} className="board-row">
+      <div key={i} className="board-row" role="row">
         {row}
       </div>,
     );
@@ -84,7 +84,9 @@ export default function Board({
         </calcite-notice>
       </calcite-block>
       <calcite-block heading="Board" expanded iconStart="grid">
-        {rows}
+        <div role="grid" aria-rowcount={boardSize} aria-colcount={boardSize}>
+          {rows}
+        </div>
       </calcite-block>
     </>
   );

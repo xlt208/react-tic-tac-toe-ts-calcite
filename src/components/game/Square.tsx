@@ -22,6 +22,7 @@ export default function Square({
   return (
     <div className="square-wrapper">
       <calcite-button
+        role="gridcell"
         appearance={isWinning ? "outline-fill" : "transparent"}
         disabled={disabled}
         label={label}
