@@ -83,11 +83,12 @@ export default function Game() {
       </calcite-navigation>
 
       <calcite-shell-panel
-        width="l"
-        slot="panel-start"
+        className="game-panel"
+        displayMode="dock"
         position="start"
-        displayMode="float-all"
         resizable
+        slot="panel-start"
+        width="l"
       >
         <calcite-panel heading="Game Board">
           <Board
@@ -100,7 +101,7 @@ export default function Game() {
         </calcite-panel>
       </calcite-shell-panel>
 
-      <calcite-shell-panel width="l" displayMode="float-all">
+      <calcite-shell-panel displayMode="float-all">
         <GameInfo
           movesHistory={history}
           boardSize={boardSize}
