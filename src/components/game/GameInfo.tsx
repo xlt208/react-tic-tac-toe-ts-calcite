@@ -191,12 +191,14 @@ export default function GameInfo({
   return (
     <calcite-panel heading="Game Info">
       <calcite-block
-        heading="Sort by"
         collapsible
         expanded={false}
+        heading="Sort by"
         iconStart="arrow-up-down"
+        label="Sort move history"
       >
         <calcite-segmented-control
+          aria-label="Sorting options"
           appearance="outline-fill"
           layout="horizontal"
           scale="m"
