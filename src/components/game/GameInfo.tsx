@@ -165,6 +165,7 @@ export default function GameInfo({
         label={label}
         description={description}
         selected={index === currentMove}
+        aria-current={index === currentMove ? "true" : undefined}
         onClick={index === currentMove ? undefined : () => onSelectMove(index)}
       />
     );
