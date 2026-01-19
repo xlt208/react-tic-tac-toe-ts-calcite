@@ -7,9 +7,7 @@ const STORAGE_KEY = "ttt-game";
 const emptyBoard = (size: number) => Array(size * size).fill(null);
 
 const loadGame = () => {
-  if (typeof window === "undefined" || !window.localStorage) {
-    return null;
-  }
+  if (typeof window === "undefined" || !window.localStorage) return null;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
@@ -51,8 +49,14 @@ export default function Game() {
   const currentSquares = history[currentMove];
 
   useEffect(() => {
-    const payload = { boardSize, history, currentMove };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    if (typeof window === "undefined" || !window.localStorage) return;
+
+    try {
+      const payload = { boardSize, history, currentMove };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    } catch (error) {
+      console.warn("Unable to persist game state:", error);
+    }
   }, [boardSize, history, currentMove]);
 
   const handlePlay = (nextSquares: Squares) => {
