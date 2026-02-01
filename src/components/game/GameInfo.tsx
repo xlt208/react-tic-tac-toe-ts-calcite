@@ -61,7 +61,14 @@ const formatMoves = (
   });
 };
 
-const buildPrintableMarkup = (moves: FormattedMove[]) => {
+const buildPrintableMarkup = (
+  moves: FormattedMove[],
+  options: {
+    includeFinalSnapshot: boolean;
+    finalBoard: BoardHistory[number];
+    boardSize: number;
+  },
+) => {
   const timestamp = new Intl.DateTimeFormat("en-US", {
     dateStyle: "medium",
     timeStyle: "short",
@@ -79,6 +86,34 @@ const buildPrintableMarkup = (moves: FormattedMove[]) => {
         </tr>`;
     })
     .join("");
+
+  const snapshotMarkup = options.includeFinalSnapshot
+    ? (() => {
+        const boardRows = Array.from(
+          { length: options.boardSize },
+          (_, row) => {
+            const cells = Array.from(
+              { length: options.boardSize },
+              (_, col) => {
+                const value =
+                  options.finalBoard[row * options.boardSize + col] ?? "-";
+                return `<td>${value}</td>`;
+              },
+            ).join("");
+
+            return `<tr>${cells}</tr>`;
+          },
+        ).join("");
+
+        return `
+          <section class="snapshot">
+            <h2>Final Board Snapshot</h2>
+            <table class="snapshot-table" aria-label="Final board snapshot">
+              <tbody>${boardRows}</tbody>
+            </table>
+          </section>`;
+      })()
+    : "";
 
   return `
     <!doctype html>
@@ -118,6 +153,7 @@ const buildPrintableMarkup = (moves: FormattedMove[]) => {
             </thead>
             <tbody>${rows}</tbody>
           </table>
+          ${snapshotMarkup}
       </body>
     </html>`;
 };
@@ -149,6 +185,8 @@ export default function GameInfo({
   onSelectMove,
 }: GameInfoProps) {
   const [sortOrder, setSortOrder] = useState<SortOrder>("new-to-old");
+  const [isPrintDialogOpen, setIsPrintDialogOpen] = useState(false);
+  const [includeFinalSnapshot, setIncludeFinalSnapshot] = useState(false);
 
   const moveDetails = formatMoves(movesHistory, boardSize, currentMove);
   const orderedMoves =
@@ -185,7 +223,12 @@ export default function GameInfo({
       console.error("Popup blocked.");
       return;
     }
-    const markup = buildPrintableMarkup(orderedMoves);
+    const finalBoard = movesHistory[movesHistory.length - 1];
+    const markup = buildPrintableMarkup(orderedMoves, {
+      includeFinalSnapshot,
+      finalBoard,
+      boardSize,
+    });
     openPrintDialog(popup, markup).catch(console.error);
   }, [orderedMoves]);
 
@@ -223,11 +266,34 @@ export default function GameInfo({
         </calcite-segmented-control>
       </calcite-block>
       <calcite-list label="Move history">{moves}</calcite-list>
+
+      <calcite-dialog
+        id="print-move-history"
+        heading="Print move history"
+        modal
+        open={isPrintDialogOpen}
+        outsideCloseDisabled
+        oncalciteDialogClose={() => setIsPrintDialogOpen(false)}
+      >
+        <calcite-label>
+          <calcite-checkbox
+            checked={includeFinalSnapshot}
+            label="Include final board snapshot"
+            labelText="Include final board snapshot"
+            oncalciteCheckboxChange={(e) => {
+              const target = e.target;
+              setIncludeFinalSnapshot(target.checked);
+            }}
+          />
+        </calcite-label>
+        <calcite-button onClick={handlePrint}>Print</calcite-button>
+      </calcite-dialog>
+
       <calcite-button
         appearance="outline-fill"
         disabled={movesHistory.length <= 1}
         iconStart="print"
-        onClick={handlePrint}
+        onClick={() => setIsPrintDialogOpen(true)}
       >
         Print move history
       </calcite-button>
