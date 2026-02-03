@@ -1,5 +1,7 @@
 import { BoardHistory } from "lib/game/types";
-import { useCallback, useState } from "react";
+import { useState } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import BoardSnapshot from "./BoardSnapshot";
 
 interface GameInfoProps {
   movesHistory: BoardHistory;
@@ -88,31 +90,15 @@ const buildPrintableMarkup = (
     .join("");
 
   const snapshotMarkup = options.includeFinalSnapshot
-    ? (() => {
-        const boardRows = Array.from(
-          { length: options.boardSize },
-          (_, row) => {
-            const cells = Array.from(
-              { length: options.boardSize },
-              (_, col) => {
-                const value =
-                  options.finalBoard[row * options.boardSize + col] ?? "-";
-                return `<td>${value}</td>`;
-              },
-            ).join("");
-
-            return `<tr>${cells}</tr>`;
-          },
-        ).join("");
-
-        return `
-          <section class="snapshot">
-            <h2>Final Board Snapshot</h2>
-            <table class="snapshot-table" aria-label="Final board snapshot">
-              <tbody>${boardRows}</tbody>
-            </table>
-          </section>`;
-      })()
+    ? renderToStaticMarkup(
+        <section className="snapshot">
+          <h2>Final Board Snapshot</h2>
+          <BoardSnapshot
+            boardSize={options.boardSize}
+            squares={options.finalBoard}
+          />
+        </section>,
+      )
     : "";
 
   return `
@@ -131,11 +117,46 @@ const buildPrintableMarkup = (
             header { margin-bottom: 24px; }
             header h1 { font-size: 1.8rem; margin: 0 0 4px; }
             header p { margin: 0; font-size: 0.9rem; color: #6e6e73; }
-            table { width: 100%; border-collapse: collapse; border: 1px solid #e5e5ea; border-radius: 12px; overflow: hidden; }
-            thead { background: #f5f5f7; }
+            table {
+              width: 100%;
+              border-collapse: collapse;
+              border: 1px solid #e5e5ea;
+            }            thead { background: #f5f5f7; }
             th, td { padding: 0.75rem 1rem; border-bottom: 1px solid #e5e5ea; text-align: left; font-size: 0.95rem; }
             th[scope="row"] { font-weight: 600; }
-            tr:last-child td { border-bottom: none; }
+            tr:last-child th, tr:last-child td { border-bottom: none; }
+            .snapshot {
+              margin-top: 24px;
+              break-inside: avoid;
+            }
+            .snapshot h2 {
+              margin: 0 0 12px;
+              font-size: 1.1rem;
+            }
+            .print-board {
+              display: inline-block;
+              border: 2px solid #c7c7c7;
+              border-right: 0;
+              border-bottom: 0;
+              background: #fff;
+            }
+            .print-board-row {
+              display: flex;
+            }
+            .print-board-cell {
+              width: 40px;
+              height: 40px;
+              border-right: 2px solid #c7c7c7;
+              border-bottom: 2px solid #c7c7c7;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-weight: 700;
+              font-size: 1rem;
+              line-height: 1;
+            }
+            @media print { .snapshot { page-break-inside: avoid; } .print-board { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+
           </style>
       </head>
       <body>
@@ -186,7 +207,7 @@ export default function GameInfo({
 }: GameInfoProps) {
   const [sortOrder, setSortOrder] = useState<SortOrder>("new-to-old");
   const [isPrintDialogOpen, setIsPrintDialogOpen] = useState(false);
-  const [includeFinalSnapshot, setIncludeFinalSnapshot] = useState(false);
+  const [includeFinalSnapshot, setIncludeFinalSnapshot] = useState(true);
 
   const moveDetails = formatMoves(movesHistory, boardSize, currentMove);
   const orderedMoves =
@@ -216,21 +237,22 @@ export default function GameInfo({
     setSortOrder(value);
   };
 
-  const handlePrint = useCallback(() => {
+  const handlePrint = () => {
     if (typeof window === "undefined") return;
     const popup = window.open("", "_blank");
     if (!popup) {
       console.error("Popup blocked.");
       return;
     }
-    const finalBoard = movesHistory[movesHistory.length - 1];
+
     const markup = buildPrintableMarkup(orderedMoves, {
       includeFinalSnapshot,
-      finalBoard,
+      finalBoard: movesHistory[movesHistory.length - 1],
       boardSize,
     });
+
     openPrintDialog(popup, markup).catch(console.error);
-  }, [orderedMoves]);
+  };
 
   return (
     <calcite-panel heading="Game Info">
