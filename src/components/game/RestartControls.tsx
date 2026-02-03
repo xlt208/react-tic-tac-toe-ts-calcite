@@ -28,7 +28,7 @@ export default function RestartControls({
         expanded={false}
         iconStart="reset"
       >
-        <div className="restart-controls">
+        <calcite-label>
           <calcite-input-number
             ref={pendingSizeRef}
             alignment="center"
@@ -42,18 +42,18 @@ export default function RestartControls({
             scale="m"
             value={boardSize.toString()}
           />
-          <calcite-button
-            appearance="outline"
-            iconStart="reset"
-            kind="danger"
-            label="Restart game"
-            round
-            width="full"
-            onClick={handleRestartClick}
-          >
-            Restart
-          </calcite-button>
-        </div>
+        </calcite-label>
+        <calcite-button
+          appearance="outline"
+          iconStart="reset"
+          kind="danger"
+          label="Restart game"
+          round
+          width="full"
+          onClick={handleRestartClick}
+        >
+          Restart
+        </calcite-button>
       </calcite-block>
     </>
   );
