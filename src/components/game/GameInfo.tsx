@@ -1,7 +1,7 @@
 import { BoardHistory } from "lib/game/types";
 import { useState } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import BoardSnapshot from "./BoardSnapshot";
+import BoardSnapshot from "../print/BoardSnapshot";
 
 interface GameInfoProps {
   movesHistory: BoardHistory;
