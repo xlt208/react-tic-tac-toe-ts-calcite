@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useState } from "react";
 
 interface RestartControlsProps {
   boardSize: number;
@@ -9,15 +9,22 @@ export default function RestartControls({
   boardSize,
   onRestart,
 }: RestartControlsProps) {
-  const pendingSizeRef = useRef<HTMLCalciteInputNumberElement>(null);
+  const [pendingSize, setPendingSize] = useState(boardSize.toString());
+  const parsedSize = Number(pendingSize);
+
+  useEffect(() => {
+    setPendingSize(boardSize.toString());
+  }, [boardSize]);
+
+  const isInvalid =
+    pendingSize.trim() === "" ||
+    !Number.isInteger(parsedSize) ||
+    parsedSize < 3 ||
+    parsedSize > 10;
 
   const handleRestartClick = () => {
-    const nextValue = Number(pendingSizeRef.current?.value);
-    if (Number.isNaN(nextValue)) {
-      return;
-    }
-    const clampedValue = Math.min(10, Math.max(3, nextValue));
-    onRestart(clampedValue);
+    if (isInvalid) return;
+    onRestart(parsedSize);
   };
 
   return (
@@ -30,7 +37,6 @@ export default function RestartControls({
       >
         <calcite-label>
           <calcite-input-number
-            ref={pendingSizeRef}
             alignment="center"
             id="board-size-input"
             integer
@@ -39,12 +45,19 @@ export default function RestartControls({
             max={10}
             min={3}
             numberButtonType="vertical"
+            placeholder={pendingSize.toString()}
             scale="m"
+            status={isInvalid ? "invalid" : "idle"}
             value={boardSize.toString()}
+            oncalciteInputNumberInput={(e) => {
+              const target = e.target as HTMLCalciteInputNumberElement;
+              setPendingSize(target.value);
+            }}
           />
         </calcite-label>
         <calcite-button
           appearance="outline"
+          disabled={isInvalid}
           iconStart="reset"
           kind="danger"
           label="Restart game"

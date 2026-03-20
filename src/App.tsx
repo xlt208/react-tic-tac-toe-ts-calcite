@@ -17,7 +17,9 @@ const loadGame = () => {
       currentMove: number;
     };
     const sizeIsValid =
-      Number.isInteger(parsed.boardSize) && parsed.boardSize >= 3;
+      Number.isInteger(parsed.boardSize) &&
+      parsed.boardSize >= 3 &&
+      parsed.boardSize <= 10;
     const historyIsValid =
       Array.isArray(parsed.history) &&
       parsed.history.every(
